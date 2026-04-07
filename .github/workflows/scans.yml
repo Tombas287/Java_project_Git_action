@@ -22,7 +22,7 @@ on:
 
 jobs:
   scan:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     strategy:
       matrix:
@@ -54,6 +54,8 @@ jobs:
         with:
           image-ref: ${{ inputs.image_name }}:${{inputs.image_tag }}
           format: table
+          severity: HIGH,CRITICAL
+          exit-code: 1
 
       # ⚫ BLACK DUCK
       # - name: Black Duck Scan
