@@ -34,7 +34,7 @@ jobs:
       
       - name: Build Docker Image 
         run: |
-          podman build -t ${{ github.event.inputs.image_name}}:${{ github.event.inputs.image_tag}} .
+          podman build --storage-driver=vfs -t ${{ github.event.inputs.image_name}}:${{ github.event.inputs.image_tag}} .
 
   scans:
     needs: build
