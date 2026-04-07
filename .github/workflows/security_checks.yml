@@ -1,0 +1,66 @@
+name: Reusable Scan Workflow
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+      image_tag:
+        required: true
+        type: string
+
+    secrets:
+      SONAR_HOST:
+        required: true
+      SONAR_TOKEN:
+        required: true
+      BLACKDUCK_URL:
+        required: true
+      BLACKDUCK_TOKEN:
+        required: true
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        scan: [sonar, trivy, blackduck]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # - name: Set up JDK 21
+      #   if: matrix.scan == 'sonar'
+      #   uses: actions/setup-java@v4
+      #   with:
+      #     distribution: temurin
+      #     java-version: 21
+
+      # # 🟡 SONAR
+      # - name: Sonar Scan
+      #   if: matrix.scan == 'sonar'
+      #   run: mvn sonar:sonar \
+      #     -Dsonar.projectKey=weather-api \
+      #     -Dsonar.host.url=${{ secrets.SONAR_HOST }} \
+      #     -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
+      # 🔵 TRIVY
+      - name: Trivy Scan
+        if: matrix.scan == 'trivy'
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ inputs.image_name }}:${{inputs.image_tag }}
+          format: table
+
+      # ⚫ BLACK DUCK
+      # - name: Black Duck Scan
+      #   if: matrix.scan == 'blackduck'
+      #   run: |
+      #     bash <(curl -s https://detect.synopsys.com/detect.sh) \
+      #     --blackduck.url=${{ secrets.BLACKDUCK_URL }} \
+      #     --blackduck.api.token=${{ secrets.BLACKDUCK_TOKEN }} \
+      #     --detect.project.name=weather-api \
+      #     --detect.project.version.name=1.0
