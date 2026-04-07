@@ -10,15 +10,15 @@ on:
         required: true
         type: string
 
-    secrets:
-      SONAR_HOST:
-        required: true
-      SONAR_TOKEN:
-        required: true
-      BLACKDUCK_URL:
-        required: true
-      BLACKDUCK_TOKEN:
-        required: true
+    # secrets:
+    #   SONAR_HOST:
+    #     required: true
+    #   SONAR_TOKEN:
+    #     required: true
+    #   BLACKDUCK_URL:
+    #     required: true
+    #   BLACKDUCK_TOKEN:
+    #     required: true
 
 jobs:
   scan:
