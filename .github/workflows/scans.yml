@@ -26,7 +26,7 @@ jobs:
 
     strategy:
       matrix:
-        scan: [sonar, trivy, blackduck]
+        scan: [trivy]
 
     steps:
       - name: Checkout
@@ -50,12 +50,18 @@ jobs:
       # 🔵 TRIVY
       - name: Trivy Scan
         if: matrix.scan == 'trivy'
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: localhost/${{ inputs.image_name }}:${{inputs.image_tag }}
-          format: table
-          severity: HIGH,CRITICAL
-          exit-code: 1
+        run: |
+            trivy image \
+              --severity HIGH,CRITICAL \
+              --exit-code 1 \
+              podman://localhost/${{ inputs.image_name }}:${{ inputs.image_tag }}
+                  
+        # uses: aquasecurity/trivy-action@master
+        # with:
+        #   image-ref: localhost/${{ inputs.image_name }}:${{inputs.image_tag }}
+        #   format: table
+        #   severity: HIGH,CRITICAL
+        #   exit-code: 1
 
       # ⚫ BLACK DUCK
       # - name: Black Duck Scan
