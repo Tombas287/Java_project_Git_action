@@ -52,7 +52,7 @@ jobs:
         if: matrix.scan == 'trivy'
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ${{ inputs.image_name }}:${{inputs.image_tag }}
+          image-ref: localhost/${{ inputs.image_name }}:${{inputs.image_tag }}
           format: table
           severity: HIGH,CRITICAL
           exit-code: 1
