@@ -28,6 +28,9 @@ jobs:
 
       - name: Maven build stage 
         run: mvn -X clean install -DskipTest 
+
+      - name: List all files 
+        run: ls -lh
       
       - name: Build Docker Image 
         run: |
