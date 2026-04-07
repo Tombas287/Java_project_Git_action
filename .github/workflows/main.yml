@@ -3,12 +3,12 @@ name: CI pipeline
 on:
   workflow_dispatch:
     inputs:
-      Image_name: 
-        description: "Enter image name"
+      image_name: 
+        description: "image name"
         required: true 
         type: string
       image_tag:
-        description: "Enter image tag"
+        description: "image tag"
         required: true
         type: string
       
@@ -34,7 +34,7 @@ jobs:
       
       - name: Build Docker Image 
         run: |
-          podman build --storage-driver=vfs -t ${{ github.event.inputs.image_name}}:${{ github.event.inputs.image_tag}} .
+          podman build  -t ${{ github.event.inputs.image_name }}:${{ github.event.inputs.image_tag }} .
 
   scans:
     needs: build
